@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Pembeli</string>
+    <string name="latitude">Lat</string>
+    <string name="longitude">Long</string>
+</resources>
