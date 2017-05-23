@@ -1,5 +1,6 @@
 package ptk111.com.pembeli;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -48,7 +49,7 @@ import ptk111.com.pembeli.Database.LokasiUser;
 
 public class MainActivity extends AppCompatActivity implements
         OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
-
+    private static final String SP = "ptk11.com.pembeli";
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MY_PERMISSIONS_REQUEST = 99;
     private final static int INTERVAL2 = 1000; //2 minutes
@@ -201,8 +202,17 @@ public class MainActivity extends AppCompatActivity implements
 
     // Write location coordinates on UI
     private void writeActualLocation(Location location) {
+        SharedPreferences sp = getSharedPreferences(SP, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+
+        int id;
+        String nama;
+        String username;
         double latitudePembeli;
         double longitudePembeli;
+
+        id = sp.getInt("id",0);
+        nama = sp.getString("nm","");
 
         textLat.setText( "Lat: " + location.getLatitude() );
         textLong.setText( "Long: " + location.getLongitude() );
@@ -210,12 +220,8 @@ public class MainActivity extends AppCompatActivity implements
         latitudePembeli = location.getLatitude();
         longitudePembeli = location.getLongitude();
 
-        lokasiUser.updateLokasiPembeliById(1, latitudePembeli, longitudePembeli);
-        markerLocation(new LatLng(location.getLatitude(), location.getLongitude()));
-
-        //for (int i = 0; i < iJumlah; i++) {
-        //updatePembeli(new LatLng(listLatitude[i], listLongitude[i]));
-        //}
+        lokasiUser.updateLokasiPembeliById(id, latitudePembeli, longitudePembeli);
+        markerLocation(nama ,new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
     private void writeLastLocation() {
@@ -227,9 +233,9 @@ public class MainActivity extends AppCompatActivity implements
 
     /* ----------------------------------------------------------------------------------- */
     // Create a Location Marker
-    private void markerLocation(LatLng latLng) {
+    private void markerLocation(String nama,LatLng latLng) {
         Log.i(TAG, "markerLocation("+latLng+")");
-        String title = latLng.latitude + ", " + latLng.longitude;
+        String title = nama + ", " + latLng.latitude + ", " + latLng.longitude;
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
                 .title(title);
@@ -270,8 +276,6 @@ public class MainActivity extends AppCompatActivity implements
 
 
     /* ----------------------------------------------------------------------------------- */
-
-
     Runnable mHandlerTask = new Runnable()
     {
         @Override
@@ -418,7 +422,6 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-
     private class updatePedagang extends AsyncTask<String, Integer, String> {
         protected String doInBackground(String... strUrl) {
             Log. v ( "yw" , "mulai ambil data" );
@@ -464,7 +467,6 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-
     private void parseLokasiPedagang(String hasil){
         int id;
         double latitude, longitude;
@@ -497,7 +499,6 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-
     private void updateLokasiPedagang(String hasil){
         int id;
         double latitude, longitude;
@@ -518,6 +519,7 @@ public class MainActivity extends AppCompatActivity implements
                 listLongitude[i]= longitude;
 
 
+
                 System.out.println("ID :" + listId[i]);
                 System.out.println("latitude :" + listLatitude[i]);
                 System.out.println("longitude :" + listLongitude[i]);
@@ -529,5 +531,4 @@ public class MainActivity extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-
 }

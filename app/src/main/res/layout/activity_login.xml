@@ -43,6 +43,8 @@
             android:hint="Username"
             android:textColorHint="@color/textCustomColor"
             android:backgroundTint="@color/textCustomColor"
+            android:textCursorDrawable="@null"
+            android:textColor="@color/textCustomColor"
             android:layout_weight="0.5">
         </EditText>
 
@@ -56,6 +58,8 @@
             android:hint="Password"
             android:textColorHint="@color/textCustomColor"
             android:backgroundTint="@color/textCustomColor"
+            android:textCursorDrawable="@null"
+            android:textColor="@color/textCustomColor"
             android:layout_weight="0.5">
         </EditText>
 
