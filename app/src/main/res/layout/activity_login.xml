@@ -39,7 +39,7 @@
             android:layout_height="0dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:hint="Username"
             android:textColorHint="@color/textCustomColor"
             android:backgroundTint="@color/textCustomColor"

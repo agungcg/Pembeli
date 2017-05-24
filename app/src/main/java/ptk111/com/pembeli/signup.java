@@ -1,6 +1,5 @@
 package ptk111.com.pembeli;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,163 +26,160 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
+import ptk111.com.pembeli.Database.LokasiUser;
 
-
-
-public class login extends AppCompatActivity {
+public class signup extends AppCompatActivity {
 
     private static final String SP = "ptk11.com.pembeli";
     private static final String TAG = login.class.getSimpleName();
 
     JSONArray arrayUser;
+    LokasiUser lokasiUser = new LokasiUser();
 
     int iJumlah = 0;
     private int[] listId = new int[100];
     private String[] listNama = new String[100];
+    private String[] listTelepon = new String[100];
     private String[] listUsername = new String[100];
     private String[] listPassword = new String[100];
     private double[] listLatitude = new double[100];
     private double[] listLongitude = new double[100];
 
-
-    @Bind(R.id.input_username)
-    EditText _usernameText;
-    @Bind(R.id.input_password)
-    EditText _passwordText;
-    @Bind(R.id.buttonLogin)
-    Button _loginButton;
-    @Bind(R.id.buttonSignUp)
-    TextView _signUpButton;
+    @Bind(R.id.input_nama)
+    EditText _namaText;
+    @Bind(R.id.input_telepon)
+    EditText _teleponText;
+    @Bind(R.id.input_email)
+    EditText _emailText;
+    @Bind(R.id.input_passwordSignup)
+    EditText _passwordSignupText;
+    @Bind(R.id.buttonBack)
+    Button _backButton;
+    @Bind(R.id.buttonCreate)
+    Button _createButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
 
-        new login.AmbilData().execute( "http://agungcahya.esy.es/server.php?operasi=viewPembeli" );
-
-        SharedPreferences sp = getSharedPreferences(SP, MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-        if (sp.getString("st", "GAGAL").equals("active")) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        new signup.AmbilData().execute( "http://agungcahya.esy.es/server.php?operasi=viewPembeli" );
 
         ButterKnife.bind(this);
 
-        _loginButton.setOnClickListener(new View.OnClickListener() {
+        _backButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-                View view = login.this.getCurrentFocus();
+        _createButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                View view = signup.this.getCurrentFocus();
                 if (view != null) {
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
-                login();
-                /*)
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-                */
-            }
-        });
-
-        _signUpButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(login.this, "Sign UP", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), signup.class);
-                startActivity(intent);
-                finish();
+                create();
             }
         });
     }
 
 
-    public void login() {
-        Log.d(TAG, "Login");
+    public void create() {
+        Log.d(TAG, "Signup");
 
         if (!validate()) {
-            onLoginFailed();
+            onCreateFailed();
             return;
         }
 
-        String username = _usernameText.getText().toString();
-        String password = _passwordText.getText().toString();
+        String email = _emailText.getText().toString();
 
-        checkExist(username, password);
+        checkExist(email);
     }
 
-
-    void checkExist(final String un, final  String pw) {
+    void checkExist(final String em) {
         int stop = 0;
         int i = 0;
-        new login.AmbilData().execute( "http://agungcahya.esy.es/server.php?operasi=viewPembeli" );
+        new signup.AmbilData().execute( "http://agungcahya.esy.es/server.php?operasi=viewPembeli" );
         while ((i < iJumlah) && (stop == 0)) {
-            if (listUsername[i].equals(un.toString())) {
+            if (listUsername[i].equals(em.toString())) {
                 stop = 1;
-                if(listPassword[i].equals(pw.toString())){
-                    SharedPreferences sp = getSharedPreferences(SP, MODE_PRIVATE);
-                    SharedPreferences.Editor ed = sp.edit();
-                    ed.putInt("id",listId[i]);
-                    ed.putString("nm",listNama[i]);
-                    ed.putString("un", un);
-                    ed.putString("pw", pw);
-                    ed.putString("st","active");
-                    ed.commit();
-                    onLoginSuccess();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    Toast.makeText(login.this, "Kata Sandi yang Anda Masukkan Salah", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(signup.this, "Email sudah Terdaftar", Toast.LENGTH_SHORT).show();
             }
             i++;
         }
         if (stop == 0) {
-            Toast.makeText(login.this, "Email tidak Terdaftar", Toast.LENGTH_SHORT).show();
+            Toast.makeText(signup.this, "Akun Berhasil Dibuat", Toast.LENGTH_SHORT).show();
+            //tambahAkun();
+            String nama = _namaText.getText().toString();
+            String telepon = _teleponText.getText().toString();
+            String username = _emailText.getText().toString();
+            String password = _passwordSignupText.getText().toString();
+
+            lokasiUser.createAkun(nama,telepon,username,password);
+
+            Intent intent = new Intent(getApplicationContext(), login.class);
+            startActivity(intent);
+            finish();
         }
     }
 
-
-    public void onLoginSuccess() {
+    public void onCreateSuccess() {
         Toast.makeText(getBaseContext(), "Login Berhasil", Toast.LENGTH_LONG).show();
-        _loginButton.setEnabled(true);
+        _createButton.setEnabled(true);
     }
 
 
-    public void onLoginFailed() {
+    public void onCreateFailed() {
         Toast.makeText(getBaseContext(), "Login Gagal", Toast.LENGTH_LONG).show();
-        _loginButton.setEnabled(true);
+        _createButton.setEnabled(true);
     }
-
 
     public boolean validate() {
         boolean valid = true;
 
-        String username = _usernameText.getText().toString();
-        String password = _passwordText.getText().toString();
+        String nama = _namaText.getText().toString();
+        String telepon = _teleponText.getText().toString();
+        String email = _emailText.getText().toString();
+        String password = _passwordSignupText.getText().toString();
 
-        if (username.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(username).matches()) {
-            _usernameText.setError("Email yang Anda Masukkan tidak Sah");
+        if (nama.isEmpty()) {
+            _namaText.setError("Nama tidak Boleh Kosong");
             valid = false;
         } else {
-            _usernameText.setError(null);
+            _namaText.setError(null);
         }
 
-        if (password.isEmpty()) {
-            _passwordText.setError("Kata Sandi tidak Boleh Kosong");
+        if (telepon.isEmpty() || telepon.length()<10 || telepon.length()>13) {
+            _teleponText.setError("Nomer Telepon yang Anda Masukkan tidak Sah");
             valid = false;
         } else {
-            _passwordText.setError(null);
+            _teleponText.setError(null);
+        }
+
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            _emailText.setError("Email yang Anda Masukkan tidak Sah");
+            valid = false;
+        } else {
+            _emailText.setError(null);
+        }
+
+
+        if (password.isEmpty()) {
+            _passwordSignupText.setError("Password tidak Boleh Kosong");
+            valid = false;
+        } else {
+            _passwordSignupText.setError(null);
         }
 
         return valid;
@@ -238,7 +234,7 @@ public class login extends AppCompatActivity {
     private void parseDataPembeli(String hasil){
         int id;
         double latitude, longitude;
-        String name, username, password;
+        String name, username, password, telepon;
         iJumlah = 1;
         try {
 
@@ -248,6 +244,7 @@ public class login extends AppCompatActivity {
                 JSONObject jsonChildNode = arrayUser.getJSONObject(i);
                 id = jsonChildNode.optInt("id");
                 name = jsonChildNode.optString("nama");
+                telepon = jsonChildNode.optString("telepon");
                 username = jsonChildNode.optString("username");
                 password = jsonChildNode.getString("password");
                 latitude = jsonChildNode.optDouble("latitude");
@@ -256,6 +253,7 @@ public class login extends AppCompatActivity {
                 iJumlah = iJumlah + i;
                 listId[i] = id;
                 listNama[i] = name;
+                listTelepon[i] = telepon;
                 listUsername[i] = username;
                 listPassword[i] = password;
                 listLatitude[i] = latitude;
@@ -268,6 +266,3 @@ public class login extends AppCompatActivity {
         }
     }
 }
-
-
-

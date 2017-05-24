@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ptk111.com.pembeli.signup">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/customColor"
+        android:weightSum="6">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:src="@drawable/logo_limakaki"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/nama"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="34dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center|start"
+            android:text="Nama"
+            android:textColor="#E8E8E8"
+            android:layout_weight="0.25">
+        </TextView>
+
+        <EditText
+            android:id="@+id/input_nama"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:inputType="text"
+            android:hint="Nama"
+            android:textColorHint="@color/textCustomColor"
+            android:backgroundTint="@color/textCustomColor"
+            android:textCursorDrawable="@null"
+            android:textColor="@color/textCustomColor"
+            android:layout_weight="0.5">
+        </EditText>
+
+        <TextView
+            android:id="@+id/telepon"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="34dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center|start"
+            android:text="Telepon"
+            android:textColor="#E8E8E8"
+            android:layout_weight="0.25">
+        </TextView>
+
+        <EditText
+            android:id="@+id/input_telepon"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:inputType="number"
+            android:hint="Telepon"
+            android:textColorHint="@color/textCustomColor"
+            android:backgroundTint="@color/textCustomColor"
+            android:textCursorDrawable="@null"
+            android:textColor="@color/textCustomColor"
+            android:layout_weight="0.5">
+        </EditText>
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="34dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center|start"
+            android:text="Email"
+            android:textColor="#E8E8E8"
+            android:layout_weight="0.25">
+        </TextView>
+
+        <EditText
+            android:id="@+id/input_email"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:inputType="textEmailAddress"
+            android:hint="Email"
+            android:textColorHint="@color/textCustomColor"
+            android:backgroundTint="@color/textCustomColor"
+            android:textCursorDrawable="@null"
+            android:textColor="@color/textCustomColor"
+            android:layout_weight="0.5">
+        </EditText>
+
+        <TextView
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="34dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center|start"
+            android:text="Password"
+            android:textColor="#E8E8E8"
+            android:layout_weight="0.25">
+        </TextView>
+
+        <EditText
+            android:id="@+id/input_passwordSignup"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:inputType="textPassword"
+            android:hint="Password"
+            android:textColorHint="@color/textCustomColor"
+            android:backgroundTint="@color/textCustomColor"
+            android:textCursorDrawable="@null"
+            android:textColor="@color/textCustomColor"
+            android:layout_weight="0.5">
+        </EditText>
+
+        <LinearLayout
+            android:id="@+id/layoutButton"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
+            android:layout_weight="0.2"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/buttonBack"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:background="@color/textCustomColor"
+                android:text="Back"
+                android:textColor="@color/customColor"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/buttonCreate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@color/textCustomColor"
+                android:text="Create Account"
+                android:textColor="@color/customColor"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

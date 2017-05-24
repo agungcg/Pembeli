@@ -1,5 +1,6 @@
 package ptk111.com.pembeli;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,7 +16,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements
 
     int iJumlah = 0;
     private int[] listId = new int[100];
+    private String[] listNama = new String[100];
     private double[] listLatitude = new double[100];
     private double[] listLongitude = new double[100];
 
@@ -76,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id. toolbar );
-        //myToolbar.setTitle("Pembeli User");
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle(null);
 
@@ -93,7 +98,34 @@ public class MainActivity extends AppCompatActivity implements
         startRepeatingTask();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu. main , menu);
+        return true ;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.logout:
+                Toast. makeText (getApplicationContext(), "Logout berhasil" ,
+                        Toast. LENGTH_LONG ).show();
+
+                SharedPreferences sp = getSharedPreferences(SP, MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+                ed.clear();
+                ed.commit();
+
+                Intent intent = new Intent(getApplicationContext(), login.class);
+                startActivity(intent);
+                finish();
+
+                return true ;
+            default :
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
     /* ----------------------------------------------------------------------------------- */
@@ -251,9 +283,9 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void markerPedagang(Integer id, LatLng latLng) {
+    private void markerPedagang(String nama, LatLng latLng) {
         Log.i(TAG, "markerPembeli("+latLng+")");
-        String title = id + "," + latLng.latitude + ", " + latLng.longitude;
+        String title = nama + "," + latLng.latitude + ", " + latLng.longitude;
         // Define marker options
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
@@ -470,6 +502,7 @@ public class MainActivity extends AppCompatActivity implements
     private void parseLokasiPedagang(String hasil){
         int id;
         double latitude, longitude;
+        String nama;
         iJumlah = 0;
         try {
 
@@ -478,11 +511,13 @@ public class MainActivity extends AppCompatActivity implements
             for (int i = 0; i < arrayUser.length(); i++) {
                 JSONObject jsonChildNode = arrayUser.getJSONObject(i);
                 id = jsonChildNode.optInt("id");
+                nama = jsonChildNode.optString("nama");
                 latitude = jsonChildNode.optDouble("latitude");
                 longitude = jsonChildNode.optDouble("longitude");
 
                 iJumlah = iJumlah + i;
                 listId[i]= id;
+                listNama[i] = nama;
                 listLatitude[i]= latitude;
                 listLongitude[i]= longitude;
 
@@ -492,7 +527,7 @@ public class MainActivity extends AppCompatActivity implements
                 System.out.println("longitude :" + listLongitude[i]);
 
 
-                markerPedagang(listId[i], new LatLng(listLatitude[i], listLongitude[i]));
+                markerPedagang(listNama[i], new LatLng(listLatitude[i], listLongitude[i]));
             }
         }catch (JSONException e) {
             e.printStackTrace();
@@ -502,6 +537,7 @@ public class MainActivity extends AppCompatActivity implements
     private void updateLokasiPedagang(String hasil){
         int id;
         double latitude, longitude;
+        String nama;
         iJumlah = 0;
         try {
 
@@ -510,11 +546,13 @@ public class MainActivity extends AppCompatActivity implements
             for (int i = 0; i < arrayUser.length(); i++) {
                 JSONObject jsonChildNode = arrayUser.getJSONObject(i);
                 id = jsonChildNode.optInt("id");
+                nama = jsonChildNode.optString("nama");
                 latitude = jsonChildNode.optDouble("latitude");
                 longitude = jsonChildNode.optDouble("longitude");
 
                 iJumlah = iJumlah + i;
                 listId[i]= id;
+                listNama[i] = nama;
                 listLatitude[i]= latitude;
                 listLongitude[i]= longitude;
 

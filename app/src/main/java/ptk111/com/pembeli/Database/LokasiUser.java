@@ -28,4 +28,14 @@ public class LokasiUser extends Koneksi {
         }
         return response;
     }
+
+    public String createAkun(String nama, String telepon ,String username, String password) {
+        try {
+            url = URL + "?operasi=insertPembeli&nama=" + nama + "&telepon=" + telepon + "&username=" + username + "&password=" + password;
+            System.out.println("URL Insert Biodata : " + url);
+            response = call(url);
+        } catch (Exception e) {
+        }
+        return response;
+    }
 }

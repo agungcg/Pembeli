@@ -24,7 +24,8 @@
             android:value="AIzaSyAvEH1rL5mVDKgGpJWW4fDatMpgcgqzp18" />
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".login"></activity>
+        <activity android:name=".login" />
+        <activity android:name=".signup"></activity>
     </application>
 
 </manifest>
